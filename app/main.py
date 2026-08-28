@@ -10,8 +10,8 @@ app = FastAPI(title="COAT API (FastAPI POC)")
 
 
 @app.exception_handler(ValidationError)
-async def pydantic_validation_exception_handler(request: Request, exc: ValidationError):
-    """Bad input from the client e.g. missing required params, invalid
+async def pydantic_validation_exception_handler(request: Request, exc: ValidationError) -> JSONResponse:
+    """Bad input from the client i.e. missing required params, invalid
     dates, or failing our custom 'at least one categorical param' rule.
     Returns 422 (Unprocessable Entity) - the standard 'your request was
     malformed' status. jsonable_encoder handles non-JSON-native types
@@ -23,7 +23,7 @@ async def pydantic_validation_exception_handler(request: Request, exc: Validatio
 
 
 @app.exception_handler(RuntimeError)
-async def athena_runtime_error_handler(request: Request, exc: RuntimeError):
+async def athena_runtime_error_handler(request: Request, exc: RuntimeError) -> JSONResponse:
     """The Athena query itself failed or was cancelled after successfully
     starting - e.g. bad SQL, a timeout, or Athena-side query failure.
     This is OUR service raising it deliberately (see AthenaService.wait_for_query),
@@ -37,7 +37,7 @@ async def athena_runtime_error_handler(request: Request, exc: RuntimeError):
 
 @app.exception_handler(BotoCoreError)
 @app.exception_handler(ClientError)
-async def aws_error_handler(request: Request, exc: Exception):
+async def aws_error_handler(request: Request, exc: Exception) -> JSONResponse:
     """AWS/boto3-level failure before or outside our own logic - e.g. missing
     or expired credentials (NoCredentialsError), network/connectivity issues
     (BotoCoreError family), or AWS itself rejecting the call (access denied,
@@ -51,7 +51,7 @@ async def aws_error_handler(request: Request, exc: Exception):
 
 
 @app.get("/health")
-def health_check():
+def health_check() -> dict [str,str]:
     """Basic liveness check - deliberately has no dependency on athena/AWS,
     so it can confirm the service itself is up even if AWS is unreachable."""
     return {"status": "ok"}

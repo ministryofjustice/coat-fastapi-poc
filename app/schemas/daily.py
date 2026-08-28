@@ -1,5 +1,6 @@
-from pydantic import BaseModel, Field, model_validator
 from datetime import date
+
+from pydantic import BaseModel, model_validator
 
 
 class DailyCostQueryParams(BaseModel):
@@ -17,7 +18,7 @@ class DailyCostQueryParams(BaseModel):
     product_name: str | None = None
 
     @model_validator(mode="after")
-    def at_least_one_categorical_param(self):
+    def at_least_one_categorical_param(self) -> "DailyCostQueryParams":
         categorical_fields = [
             self.account_name,
             self.region,

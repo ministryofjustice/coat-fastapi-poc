@@ -1,5 +1,7 @@
 import time
+
 import boto3
+
 from app.core.config import settings
 from app.schemas.daily import DailyCostQueryParams
 
@@ -32,7 +34,9 @@ def build_daily_cost_query(params: DailyCostQueryParams) -> str:
             selected_dimensions.append((column_name, value))
 
     select_columns = [col for col, _ in selected_dimensions]
-    select_clause = ", ".join(select_columns + ["usage_date", "SUM(daily_cost) AS total_daily_cost"])
+    select_clause = ", ".join(
+        select_columns + ["usage_date", "SUM(daily_cost) AS total_daily_cost"]
+    )
     group_by_clause = ", ".join(select_columns + ["usage_date"])
 
     where_conditions = [
@@ -54,7 +58,7 @@ def build_daily_cost_query(params: DailyCostQueryParams) -> str:
 
 
 class AthenaService:
-    def __init__(self):
+    def __init__(self) -> None:
         self.client = boto3.client("athena", region_name=settings.aws_region)
         self.database = settings.athena_database
         self.workgroup = settings.athena_workgroup
