@@ -13,7 +13,7 @@ coat-fastapi-poc/
 │   ├── core/
 │   │   ├── __init__.py
 │   │   └── config.py        # settings (env vars, AWS profile, Athena db name etc.)
-│   ├── models/
+│   ├── schemas/
 │   │   ├── __init__.py
 │   │   └── daily.py         # Pydantic response/request models for /daily
 │   └── services/

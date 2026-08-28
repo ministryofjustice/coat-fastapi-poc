@@ -11,7 +11,7 @@ app = FastAPI(title="COAT API (FastAPI POC)")
 
 @app.exception_handler(ValidationError)
 async def pydantic_validation_exception_handler(request: Request, exc: ValidationError):
-    """Bad input from the client - e.g. missing required params, invalid
+    """Bad input from the client e.g. missing required params, invalid
     dates, or failing our custom 'at least one categorical param' rule.
     Returns 422 (Unprocessable Entity) - the standard 'your request was
     malformed' status. jsonable_encoder handles non-JSON-native types
@@ -52,9 +52,8 @@ async def aws_error_handler(request: Request, exc: Exception):
 
 @app.get("/health")
 def health_check():
-    """Basic liveness check - deliberately has no dependency on Athena/AWS,
-    so it can confirm the service itself is up even if AWS is unreachable.
-    Useful for Docker/Kubernetes healthchecks later."""
+    """Basic liveness check - deliberately has no dependency on athena/AWS,
+    so it can confirm the service itself is up even if AWS is unreachable."""
     return {"status": "ok"}
 
 
