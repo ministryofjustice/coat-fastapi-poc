@@ -7,8 +7,8 @@ router = APIRouter()
 
 
 @router.get(
-    "/cloud-cost/daily", 
-    response_model=DailyCostResponse, 
+    "/cloud-cost/daily",
+    response_model=DailyCostResponse,
     response_model_exclude_none=True,
 )
 def get_daily_cost(params: DailyCostQueryParams = Depends()) -> DailyCostResponse:
