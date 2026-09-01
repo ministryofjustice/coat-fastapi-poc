@@ -1,0 +1,41 @@
+# Version control
+.git/
+.gitignore
+.github/
+
+# Python virtual env
+.venv/
+venv/
+ENV/
+env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Tool caches
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Secrets & environmen files 
+
+.env
+.env.*
+!.env.example
+
+# Docker itself
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Editor/OS junk
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Docs and project meta
+README.md
