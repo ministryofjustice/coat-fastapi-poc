@@ -1,7 +1,7 @@
 [project]
 name = "coat-fastapi-poc"
 version = "0.1.0"
-requires-python = ">=3.14"
+requires-python = ">=3.13"
 dependencies = [
     "boto3>=1.43.78",
     "fastapi[standard]>=0.141.1",
@@ -16,8 +16,10 @@ dev = [
 
 ################ mypy checks below ################
 
+# check python version - possibly 3.13
+
 [tool.mypy]
-python_version = "3.14"
+python_version = "3.13"
 strict = true
 files = ["app"] # only checks /app folder
 exclude = [
@@ -74,8 +76,8 @@ exclude = [
 line-length = 88
 indent-width = 4
 
-# Assume Python 3.14
-target-version = "py314"
+# Assume Python 3.13
+target-version = "py313"
 
 [tool.ruff.lint]
 select = ["E", "F", "ASYNC", "I"]  # See the Default Rules page for the full listing.
