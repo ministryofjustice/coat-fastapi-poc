@@ -48,7 +48,9 @@ make stop    # stop the running container
 make shell   # open a shell inside the running container
 make health  # curl the /health endpoint
 ```
+---
 
+curl commands to test /daily endpoints: 
 ```
 ### Health check - no AWS dependency
 curl "http://localhost:8000/health"
