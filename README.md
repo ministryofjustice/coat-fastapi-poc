@@ -49,6 +49,22 @@ make shell   # open a shell inside the running container
 make health  # curl the /health endpoint
 ```
 
+### Health check - no AWS dependency
+curl http://localhost:8000/health
+
+### Single dimension filter - returns real data
+curl "http://localhost:8000/api/v1/cloud-cost/daily?start_usage_date=2026-01-01&end_usage_date=2026-08-24&business_unit=HMPPS"
+
+### Multiple dimensions at once
+curl "http://localhost:8000/api/v1/cloud-cost/daily?start_usage_date=2026-01-01&end_usage_date=2026-08-24&business_unit=HMPPS&region=eu-west-2"
+
+### Missing required categorical param - expect a clean 422
+curl "http://localhost:8000/api/v1/cloud-cost/daily?start_usage_date=2026-01-01&end_usage_date=2026-08-24"
+
+### Missing required date params entirely - expect a 422
+curl "http://localhost:8000/api/v1/cloud-cost/daily?business_unit=HMPPS"
+
+
 ## Project structure
 
 ```
