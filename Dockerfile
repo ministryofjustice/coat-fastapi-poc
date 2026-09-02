@@ -1,4 +1,4 @@
-FROM python:3.13-slim AS builder
+FROM python:3.13 AS builder
 
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
@@ -9,7 +9,7 @@ RUN uv sync --frozen --no-dev
 
 COPY app ./app
 
-FROM python:3.13-slim
+FROM python:3.13
 
 WORKDIR /app
 
@@ -26,6 +26,6 @@ RUN apt-get update \
 ENV PATH="/app/.venv/bin:$PATH"
 
 USER appuser
-EXPOSE 3000
+EXPOSE 8000
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "3000"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

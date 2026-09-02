@@ -36,7 +36,7 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           image: ${{ github.sha }}
-          args: --file=Dockerfile.singlestage-test
+          args: --file=Dockerfile
 
       - name: Check for SARIF file
         id: sarif
