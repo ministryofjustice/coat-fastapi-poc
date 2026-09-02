@@ -7,7 +7,7 @@ build:
 
 run: build
 	docker run --rm \
-		-p 3000:3000 \
+		-p 8000:8000 \
 		-v ~/.aws:/home/appuser/.aws:ro \
 		-e AWS_PROFILE=$(AWS_PROFILE) \
 		-e APP_ENV=development \
@@ -21,4 +21,4 @@ shell:
 	docker exec -it $(CONTAINER_NAME) /bin/sh
 
 health:
-	curl http://localhost:3000/health
+	curl http://localhost:8000/health

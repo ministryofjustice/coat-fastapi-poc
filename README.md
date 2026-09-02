@@ -30,7 +30,7 @@ uv run fastapi dev app/main.py
 The API will be available at `http://localhost:8000`. Swagger/API docs are at
 `http://localhost:8000/docs`.
 
-### Option 2: Run Docker to check container, via Makefile
+### Option 2: Docker, via Makefile
 
 ```bash
 make run
@@ -38,7 +38,7 @@ make run
 
 This builds the image and starts the container, mounting your `~/.aws`
 folder into the container so it can use your existing SSO session. The API
-will be available at `http://localhost:3000`.
+will be available at `http://localhost:8000`.
 
 Other Makefile targets:
 
