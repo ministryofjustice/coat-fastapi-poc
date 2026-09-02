@@ -49,8 +49,9 @@ make shell   # open a shell inside the running container
 make health  # curl the /health endpoint
 ```
 
+```
 ### Health check - no AWS dependency
-curl http://localhost:8000/health
+curl "http://localhost:8000/health"
 
 ### Single dimension filter - returns real data
 curl "http://localhost:8000/api/v1/cloud-cost/daily?start_usage_date=2026-01-01&end_usage_date=2026-08-24&business_unit=HMPPS"
@@ -63,7 +64,19 @@ curl "http://localhost:8000/api/v1/cloud-cost/daily?start_usage_date=2026-01-01&
 
 ### Missing required date params entirely - expect a 422
 curl "http://localhost:8000/api/v1/cloud-cost/daily?business_unit=HMPPS"
+```
 
+
+## Linting & type checking
+
+This repo uses `ruff` for linting/import sorting and `mypy` for static type
+checking, both configured in `pyproject.toml`.
+
+```bash
+uv run ruff check .    # lint
+uv run ruff format .   # auto-format
+uv run mypy            # type check
+```
 
 ## Project structure
 
@@ -84,20 +97,3 @@ app/
 ```
 
 
-## Linting & type checking
-
-This repo uses `ruff` for linting/import sorting and `mypy` for static type
-checking, both configured in `pyproject.toml`.
-
-```bash
-uv run ruff check .    # lint
-uv run ruff format .   # auto-format
-uv run mypy            # type check
-```
-
-Both are wired into GitHub Actions and run on every push and pull request.
-
-Note: `app/services/athena.py` is currently exempted from mypy via a scoped
-override in `pyproject.toml`. This is deliberate, as that file is being
-rewritten to use `aioboto3` (see ticket #1072), so it isn't worth fully
-type-annotating the current sync `boto3` version now.
