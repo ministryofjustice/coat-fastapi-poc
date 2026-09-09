@@ -11,9 +11,9 @@ router = APIRouter()
     response_model=DailyCostResponse,
     response_model_exclude_none=True,
 )
-def get_daily_cost(params: DailyCostQueryParams = Depends()) -> DailyCostResponse:
+async def get_daily_cost(params: DailyCostQueryParams = Depends()) -> DailyCostResponse:
     athena_service = AthenaService()
-    raw_rows = athena_service.get_daily_cost(params)
+    raw_rows = await athena_service.get_daily_cost(params)
     rows = [DailyCostRow(**row) for row in raw_rows]
 
     return DailyCostResponse(

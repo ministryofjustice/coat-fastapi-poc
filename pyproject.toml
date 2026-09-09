@@ -3,7 +3,7 @@ name = "coat-fastapi-poc"
 version = "0.1.0"
 requires-python = ">=3.13"
 dependencies = [
-    "boto3>=1.43.78",
+    "aioboto3>=15.5.0",
     "fastapi[standard]>=0.141.1",
 ]
 
