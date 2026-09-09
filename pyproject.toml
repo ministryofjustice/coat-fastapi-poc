@@ -12,6 +12,7 @@ dev = [
     "mypy>=2.3.1",
     "pytest>=9.1.1",
     "ruff>=0.16.5",
+    "types-aiobotocore[athena]>=3.9.1",
 ]
 
 ################ mypy checks below ################
@@ -28,16 +29,8 @@ exclude = [
 ]
 
 [[tool.mypy.overrides]]
-module = "boto3.*"
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
 module = "botocore.*"
 ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = "app.services.athena"
-ignore_errors = true
 
 ################ ruff linting below ################
 

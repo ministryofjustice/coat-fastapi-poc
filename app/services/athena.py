@@ -1,6 +1,7 @@
 import asyncio
+from typing import Any
 
-import aioboto3
+import aioboto3  # type: ignore[import-untyped]
 
 from app.core.config import settings
 from app.schemas.daily import DailyCostQueryParams
@@ -65,16 +66,16 @@ class AthenaService:
         self.workgroup = settings.athena_workgroup
         self.output_location = settings.athena_output_location
 
-    async def start_query(self, client, query: str) -> str:
+    async def start_query(self, client: Any, query: str) -> str:
         response = await client.start_query_execution(
             QueryString=query,
             QueryExecutionContext={"Database": self.database},
             ResultConfiguration={"OutputLocation": self.output_location},
             WorkGroup=self.workgroup,
         )
-        return response["QueryExecutionId"]
+        return str(response["QueryExecutionId"])
 
-    async def wait_for_query(self, client, query_execution_id: str) -> None:
+    async def wait_for_query(self, client: Any, query_execution_id: str) -> None:
         while True:
             response = await client.get_query_execution(
                 QueryExecutionId=query_execution_id
@@ -92,12 +93,14 @@ class AthenaService:
 
             await asyncio.sleep(2)
 
-    async def get_results(self, client, query_execution_id: str) -> list[dict]:
+    async def get_results(
+            self, client: Any, query_execution_id: str
+        ) -> list[dict[str, Any]]:
         paginator = client.get_paginator("get_query_results")
         pages = paginator.paginate(QueryExecutionId=query_execution_id)
 
         columns: list[str] = []
-        rows: list[dict] = []
+        rows: list[dict[str, Any]] = []
 
         async for page in pages:
             if not columns:
@@ -112,7 +115,7 @@ class AthenaService:
 
         return rows[1:]  # first row is the header row, same as Node's .slice(1)
 
-    async def run_query(self, query: str) -> list[dict]:
+    async def run_query(self, query: str) -> list[dict[str, Any]]:
         async with self.session.client(
             "athena", region_name=self.region_name
         ) as client:
@@ -120,6 +123,8 @@ class AthenaService:
             await self.wait_for_query(client, query_execution_id)
             return await self.get_results(client, query_execution_id)
 
-    async def get_daily_cost(self, params: DailyCostQueryParams) -> list[dict]:
+    async def get_daily_cost(
+            self, params: DailyCostQueryParams
+        ) -> list[dict[str, Any]]:
         query = build_daily_cost_query(params)
         return await self.run_query(query)

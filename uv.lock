@@ -295,6 +295,15 @@ wheels = [
 ]
 
 [[package]]
+name = "botocore-stubs"
+version = "1.43.67"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/3f/45/53d662227dc4787b2c854445ee7eb4751cb5d74cfb5c686a6ecbe1f94c17/botocore_stubs-1.43.67.tar.gz", hash = "sha256:853e74014a1f557055c4ffae5fb38d7c65c7c0520e1aab366cac41d5428f419d", size = 42846, upload-time = "2026-08-08T14:57:53.412Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/4e/5e/bdbf19967898a032292da65a47d6e25b2eee55865db4e687f861d80b5602/botocore_stubs-1.43.67-py3-none-any.whl", hash = "sha256:c51262bac3341c1cda71f05fa01141fffd3990d7a92c7960e3b755c1bc830373", size = 67244, upload-time = "2026-08-08T14:57:52.01Z" },
+]
+
+[[package]]
 name = "certifi"
 version = "2026.7.22"
 source = { registry = "https://pypi.org/simple" }
@@ -329,6 +338,7 @@ dev = [
     { name = "mypy" },
     { name = "pytest" },
     { name = "ruff" },
+    { name = "types-aiobotocore", extra = ["athena"] },
 ]
 
 [package.metadata]
@@ -342,6 +352,7 @@ dev = [
     { name = "mypy", specifier = ">=2.3.1" },
     { name = "pytest", specifier = ">=9.1.1" },
     { name = "ruff", specifier = ">=0.16.5" },
+    { name = "types-aiobotocore", extras = ["athena"], specifier = ">=3.9.1" },
 ]
 
 [[package]]
@@ -1559,6 +1570,32 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/ae/40/4a3db7990d1f62a53182aa96eaef57aeb2886a27f90a195bc66713565d31/typer-0.27.1.tar.gz", hash = "sha256:a79bef8469a79c45498e7b814ecf8d603cc7644e9acbd9e19cac0334240b18df", size = 203994, upload-time = "2026-08-03T14:41:03.438Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/43/89/9518bc0c3929bee36b3a4a8e3daddd6e03f92f9961c66d4983b837160543/typer-0.27.1-py3-none-any.whl", hash = "sha256:53150287edd11baeb4e4722c8e394fcdf8181c0ae89485cba8d25c778d5edd56", size = 122874, upload-time = "2026-08-03T14:41:04.391Z" },
+]
+
+[[package]]
+name = "types-aiobotocore"
+version = "3.9.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "botocore-stubs" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/b4/8d/d9654bb658aedc849eca2f761669d4a53faa56a75464663f5d7e5be58c27/types_aiobotocore-3.9.1.tar.gz", hash = "sha256:d86497c3d821ca3e5b0c4705ad85066672c57c64b715333500979f4565844d4e", size = 89449, upload-time = "2026-09-09T03:35:15.643Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/73/a4/426846af7d5ddb7254942d4144a8d2a497aa1a7d20a579307e2431cb42e6/types_aiobotocore-3.9.1-py3-none-any.whl", hash = "sha256:768ca08c54e4c1657a62a8229aa465263a73c2290b5339cf2a2314b0a61d392c", size = 55271, upload-time = "2026-09-09T03:35:11.703Z" },
+]
+
+[package.optional-dependencies]
+athena = [
+    { name = "types-aiobotocore-athena" },
+]
+
+[[package]]
+name = "types-aiobotocore-athena"
+version = "3.9.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/19/b8/617ee7edd19ae75a092341bba175b2d29bc64d4132544964fde084d1720e/types_aiobotocore_athena-3.9.1.tar.gz", hash = "sha256:7ef3d83a5e0fc03ce0bd48d7ea20ed0e240e4026e588d1e13f827e60a03da08d", size = 38002, upload-time = "2026-09-08T03:32:47.345Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/83/9b/bfe7a41a02e43cfb4c51c9486d6edba08627af8b85274c3b250f8e0efc39/types_aiobotocore_athena-3.9.1-py3-none-any.whl", hash = "sha256:f422406d8181ed2a201c569a140674e786e6e27c2d34378d54a17730085d63ea", size = 42703, upload-time = "2026-09-08T03:32:46.213Z" },
 ]
 
 [[package]]
