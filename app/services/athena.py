@@ -94,8 +94,8 @@ class AthenaService:
             await asyncio.sleep(2)
 
     async def get_results(
-            self, client: Any, query_execution_id: str
-        ) -> list[dict[str, Any]]:
+        self, client: Any, query_execution_id: str
+    ) -> list[dict[str, Any]]:
         paginator = client.get_paginator("get_query_results")
         pages = paginator.paginate(QueryExecutionId=query_execution_id)
 
@@ -124,7 +124,7 @@ class AthenaService:
             return await self.get_results(client, query_execution_id)
 
     async def get_daily_cost(
-            self, params: DailyCostQueryParams
-        ) -> list[dict[str, Any]]:
+        self, params: DailyCostQueryParams
+    ) -> list[dict[str, Any]]:
         query = build_daily_cost_query(params)
         return await self.run_query(query)
