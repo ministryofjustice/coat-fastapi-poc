@@ -53,22 +53,34 @@ make health  # curl the /health endpoint
 ## curl commands to test /daily endpoints: 
 
 ### Health check - no AWS dependency
-```curl "http://localhost:8000/health"```
+```
+curl "http://localhost:8000/health"
+```
 
 ### Single dimension filter - returns real data
-```curl "http://localhost:8000/api/v1/cloud-cost/daily?start_usage_date=2025-12-01&end_usage_date=2025-12-10&business_unit=HMPPS"```
+```
+curl "http://localhost:8000/api/v1/cloud-cost/daily?start_usage_date=2025-12-01&end_usage_date=2025-12-10&business_unit=HMPPS"
+```
 
 ### Multiple dimensions at once
-```curl "http://localhost:8000/api/v1/cloud-cost/daily?start_usage_date=2025-12-01&end_usage_date=2025-12-10&business_unit=LAA&region=eu-west-2"```
+```
+curl "http://localhost:8000/api/v1/cloud-cost/daily?start_usage_date=2025-12-01&end_usage_date=2025-12-10&business_unit=LAA&region=eu-west-2"
+```
 
 ### Missing required categorical param - expect a clean 422
-```curl "http://localhost:8000/api/v1/cloud-cost/daily?start_usage_date=2025-12-01&end_usage_date=2025-12-10"```
+```
+curl "http://localhost:8000/api/v1/cloud-cost/daily?start_usage_date=2025-12-01&end_usage_date=2025-12-10"
+```
 
 ### Missing required date params entirely - expect a 422
-```curl "http://localhost:8000/api/v1/cloud-cost/daily?business_unit=HMPPS"```
+```
+curl "http://localhost:8000/api/v1/cloud-cost/daily?business_unit=HMPPS"
+```
 
 ### Returns an empty result - handled gracefully
-```curl "http://localhost:8000/api/v1/cloud-cost/daily?start_usage_date=2025-12-01&end_usage_date=2025-12-10&business_unit=NOT_A_REAL_UNIT"```
+```
+curl "http://localhost:8000/api/v1/cloud-cost/daily?start_usage_date=2025-12-01&end_usage_date=2025-12-10&business_unit=NOT_A_REAL_UNIT"
+```
 
 #### Concurrency check
 ```
@@ -106,7 +118,7 @@ app/
 ├── schemas/
 │   └── daily.py             — Pydantic request/response shapes for /daily
 └── services/
-    └── athena.py            — AthenaService, query builder, boto3 calls (for now before moving to aioboto3)
+    └── athena.py            — AthenaService, query builder, aioboto3 calls 
 ```
 
 
