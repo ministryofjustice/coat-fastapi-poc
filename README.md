@@ -6,7 +6,7 @@ Proof of Concept API for retrieving cloud cost data.
 
 - [uv](https://docs.astral.sh/uv/) for dependency management
 - Docker, to run this in a container
-- AWS SSO access to the `modernisation-platform-sandbox` profile, with
+- AWS SSO access to the `modernisation-platform-developer` profile, with
   permissions to query Athena in `coat-development`
 
 ## Running locally
@@ -16,8 +16,8 @@ Proof of Concept API for retrieving cloud cost data.
 Make sure you have an active AWS SSO session first:
 
 ```bash
-aws sso login --profile modernisation-platform-sandbox
-export AWS_PROFILE=modernisation-platform-sandbox
+aws sso login --profile modernisation-platform-developer
+export AWS_PROFILE=modernisation-platform-developer
 ```
 
 Then install dependencies and run the app:
