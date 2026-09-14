@@ -1,23 +1,8 @@
 from app.schemas.daily import DailyCostQueryParams
-
-# Allowlist: query param name -> real SQL column name.
-# This is the ONLY set of columns that can ever appear in SELECT/GROUP BY/WHERE.
-DAILY_COST_DIMENSION_COLUMNS = {
-    "account_name": "account_name",
-    "region": "product_region_code",
-    "environment": "environment",
-    "business_unit": "business_unit",
-    "application": "tag_application",
-    "namespace": "tag_namespace",
-    "service_area": "tag_service_area",
-    "owner": "tag_owner",
-    "product_name": "product_name",
-}
-
-
-def _escape_literal(value: str) -> str:
-    """Escape single quotes for safe inclusion in a SQL string literal."""
-    return value.replace("'", "''")
+from app.services.query_builder.cloud_cost.daily_cost_columns import (
+    DAILY_COST_DIMENSION_COLUMNS,
+)
+from app.services.query_builder.escape_literal import escape_literal
 
 
 def build_daily_cost_query(params: DailyCostQueryParams) -> str:
@@ -39,7 +24,7 @@ def build_daily_cost_query(params: DailyCostQueryParams) -> str:
         f"AND DATE '{params.end_usage_date.isoformat()}'"
     ]
     for column_name, value in selected_dimensions:
-        where_conditions.append(f"{column_name} = '{_escape_literal(value)}'")
+        where_conditions.append(f"{column_name} = '{escape_literal(value)}'")
 
     where_clause = " AND ".join(where_conditions)
 
