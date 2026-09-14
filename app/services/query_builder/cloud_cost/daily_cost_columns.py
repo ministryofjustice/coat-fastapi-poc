@@ -1,4 +1,3 @@
-
 # Allowlist: query param name -> real SQL column name.
 # This is the ONLY set of columns that can ever appear in SELECT/GROUP BY/WHERE.
 DAILY_COST_DIMENSION_COLUMNS = {
