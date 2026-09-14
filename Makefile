@@ -1,6 +1,6 @@
 IMAGE_NAME := coat-fastapi-poc
 CONTAINER_NAME := coat-fastapi-poc
-AWS_PROFILE := modernisation-platform-sandbox
+AWS_PROFILE := modernisation-platform-developer
 
 build:
 	docker build -t $(IMAGE_NAME) .
