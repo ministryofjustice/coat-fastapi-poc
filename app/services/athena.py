@@ -16,8 +16,11 @@ class AthenaService:
         self.workgroup = settings.athena_workgroup
         self.output_location = settings.athena_output_location
 
-    async def start_query(self, client: Any, query: str) -> str:
+    async def start_query(
+        self, client: Any, query: str, execution_params: list[str]
+    ) -> str:
         response = await client.start_query_execution(
+            ExecutionParameters=execution_params,
             QueryString=query,
             QueryExecutionContext={"Database": self.database},
             ResultConfiguration={"OutputLocation": self.output_location},
@@ -63,18 +66,20 @@ class AthenaService:
                 values = [field.get("VarCharValue", "") for field in row["Data"]]
                 rows.append(dict(zip(columns, values)))
 
-        return rows[1:]  # first row is the header row, same as Node's .slice(1)
+        return rows[1:]  # first row is the header row
 
-    async def run_query(self, query: str) -> list[dict[str, Any]]:
+    async def run_query(
+        self, query: str, execution_params: list[str]
+    ) -> list[dict[str, Any]]:
         async with self.session.client(
             "athena", region_name=self.region_name
         ) as client:
-            query_execution_id = await self.start_query(client, query)
+            query_execution_id = await self.start_query(client, query, execution_params)
             await self.wait_for_query(client, query_execution_id)
             return await self.get_results(client, query_execution_id)
 
     async def get_daily_cost(
         self, params: DailyCostQueryParams
     ) -> list[dict[str, Any]]:
-        query = build_daily_cost_query(params)
-        return await self.run_query(query)
+        query, execution_params = build_daily_cost_query(params)
+        return await self.run_query(query, execution_params)
