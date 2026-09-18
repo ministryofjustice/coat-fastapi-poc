@@ -58,7 +58,8 @@ def build_daily_cost_query(params: DailyCostQueryParams) -> tuple[str, list[str]
         f"FROM fct_daily_cost\n"
         f"WHERE {where_clause}\n"
         f"GROUP BY {group_by_clause}\n"
-        f"ORDER BY usage_date;"
+        f"ORDER BY usage_date\n"
+        f"LIMIT {params.limit};"
     )
 
     return query, execution_params

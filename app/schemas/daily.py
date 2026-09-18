@@ -1,6 +1,6 @@
 from datetime import date
 
-from pydantic import BaseModel, model_validator
+from pydantic import BaseModel, Field, model_validator
 
 
 class DailyCostQueryParams(BaseModel):
@@ -16,6 +16,8 @@ class DailyCostQueryParams(BaseModel):
     service_area: str | None = None
     owner: str | None = None
     product_name: str | None = None
+
+    limit: int = Field(default=100, ge=1, le=1500)  # row-limiter via pydantic Field
 
     @model_validator(mode="after")
     def at_least_one_categorical_param(self) -> "DailyCostQueryParams":
