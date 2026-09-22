@@ -15,6 +15,10 @@ dev = [
     "types-aiobotocore[athena]>=3.9.1",
 ]
 
+# points pytest to the testpaths
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
 ################ mypy checks below ################
 
 # check python version - possibly 3.13
