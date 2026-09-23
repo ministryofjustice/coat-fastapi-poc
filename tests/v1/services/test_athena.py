@@ -1,6 +1,9 @@
 import pytest
-from unittest.mock import AsyncMock
+from datetime import date
+from unittest.mock import AsyncMock, MagicMock
 from app.services.athena import AthenaService
+from app.services.query_builder import build_daily_cost_query
+from app.schemas.daily import DailyCostQueryParams
 
 
 @pytest.mark.asyncio
@@ -82,3 +85,47 @@ async def test_wait_for_query_polls_until_succeeded():
     await service.wait_for_query(client, "query-id-123")
 
     assert client.get_query_execution.call_count == 2
+
+@pytest.mark.asyncio
+async def test_run_query_executes_start_wait_and_get_results():
+    """
+    run query function calls start_query, 
+    wait_for_query and get_results in order and returns get_results output
+    """
+    service = AthenaService()
+
+    fake_client = AsyncMock()
+    client_context_manager = AsyncMock()
+    client_context_manager.__aenter__.return_value = fake_client
+    service.session = MagicMock()
+    service.session.client.return_value = client_context_manager
+
+    service.start_query = AsyncMock(return_value="query-id-123")
+    service.wait_for_query = AsyncMock(return_value=None)
+    service.get_results = AsyncMock(return_value=[{"account_name": "LAA"}])
+
+    result = await service.run_query("SELECT 1", ["param1"])
+
+    service.start_query.assert_called_once_with(fake_client, "SELECT 1", ["param1"])
+    service.wait_for_query.assert_called_once_with(fake_client, "query-id-123")
+    service.get_results.assert_called_once_with(fake_client, "query-id-123")
+    assert result == [{"account_name": "LAA"}]
+
+
+@pytest.mark.asyncio
+async def test_get_daily_cost_builds_query_and_calls_run_query():
+    """get_daily_cost builds the query via build_daily_cost_query and passes it to run_query"""
+    service = AthenaService()
+    params = DailyCostQueryParams(
+        start_usage_date=date(2025, 12, 1),
+        end_usage_date=date(2025, 12, 10),
+        account_name="LAA",
+    )
+    expected_query, expected_execution_params = build_daily_cost_query(params)
+
+    service.run_query = AsyncMock(return_value=[{"account_name": "LAA"}])
+
+    result = await service.get_daily_cost(params)
+
+    service.run_query.assert_called_once_with(expected_query, expected_execution_params)
+    assert result == [{"account_name": "LAA"}]
