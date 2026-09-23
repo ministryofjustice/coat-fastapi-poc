@@ -1,9 +1,11 @@
-import pytest
 from datetime import date
 from unittest.mock import AsyncMock, MagicMock
+
+import pytest
+
+from app.schemas.daily import DailyCostQueryParams
 from app.services.athena import AthenaService
 from app.services.query_builder import build_daily_cost_query
-from app.schemas.daily import DailyCostQueryParams
 
 
 @pytest.mark.asyncio

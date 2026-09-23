@@ -1,6 +1,8 @@
 from datetime import date
+
 from app.schemas.daily import DailyCostQueryParams
 from app.services.query_builder.cloud_cost.daily import build_daily_cost_query
+
 
 def test_build_daily_cost_query_with_one_dimension():
     """One selected dimension appears in SELECT, GROUP BY, WHERE, and execution_params"""
