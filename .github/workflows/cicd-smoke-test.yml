@@ -1,0 +1,42 @@
+name: smoke-test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  smoke-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version-file: ".python-version"
+
+      - uses: astral-sh/setup-uv@v1
+        with:
+          version: "latest"
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Start app
+        run: uv run uvicorn app.main:app --host 0.0.0.0 --port 8000 &
+
+      - name: Wait for app to be ready
+        run: |
+          for i in {1..10}; do
+            curl -sf http://localhost:8000/health && break
+            sleep 1
+          done
+
+      - name: Check health endpoint
+        run: curl -sf http://localhost:8000/health
+
+      - name: Check docs endpoint
+        run: curl -sf http://localhost:8000/docs
+
+      - name: Check openapi schema
+        run: curl -sf http://localhost:8000/openapi.json
