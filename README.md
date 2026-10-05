@@ -118,7 +118,13 @@ app/
 ├── schemas/
 │   └── daily.py             — Pydantic request/response shapes for /daily
 └── services/
-    └── athena.py            — AthenaService, query builder, aioboto3 calls 
+│    └── athena.py            — AthenaService, query builder, aioboto3 calls
+│                             handlers, defines /health
+├── tests                   - Full test suite
+│   ├── README.md
+│   ├── __init__.py
+│   ├── conftest.py
+│   └── v1
 ```
 
 
