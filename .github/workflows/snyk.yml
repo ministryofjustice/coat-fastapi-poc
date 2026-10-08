@@ -14,50 +14,49 @@ on:
 permissions: {}
 
 jobs:
-  ######### CURRENTLY DIASBLED ###########
-  # - fails with "Could not detect package manager
-  #   for file: Dockerfile" (SNYK-CLI-0000)
-  #   separate ticket for this issue has been raised
-  ####--------------------------------------
-  # snyk-container:
-  #   name: Snyk Container
-  #   runs-on: ubuntu-latest
-  #   permissions:
-  #     actions: read
-  #     contents: read
-  #     security-events: write
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+  # snyk/actions/docker runs `snyk test --file=Dockerfile`. In this uv
+  # project that flag is read as a package manifest and fails with
+  # SNYK-CLI-0000 ("Could not detect package manager for file: Dockerfile").
+  # `snyk container test` scans the built image instead.
+  snyk-container:
+    name: Snyk Container
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
 
-  #     - name: Build image
-  #       run: docker build --tag "${{ github.sha }}" .
+      - name: Build image
+        run: docker build --tag "${{ github.sha }}" .
 
-  #     - name: Scan container image
-  #       id: scan
-  #       continue-on-error: true
-  #       uses: snyk/actions/docker@9adf32b1121593767fc3c057af55b55db032dc04 # v1.0.0
-  #       env:
-  #         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-  #       with:
-  #         image: ${{ github.sha }}
-  #         args: --file=Dockerfile
+      - name: Setup Snyk CLI
+        uses: snyk/actions/setup@9adf32b1121593767fc3c057af55b55db032dc04 # v1.0.0
 
-  #     - name: Check for SARIF file
-  #       id: sarif
-  #       if: always() && steps.scan.outcome != 'skipped'
-  #       run: echo "exists=$([ -f snyk.sarif ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+      - name: Scan container image
+        id: scan
+        continue-on-error: true
+        run: snyk container test "${{ github.sha }}" --file=Dockerfile --severity-threshold=high --fail-on=upgradable --sarif-file-output=snyk.sarif
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
-  #     - name: Upload SARIF
-  #       if: always() && steps.sarif.outputs.exists == 'true'
-  #       uses: github/codeql-action/upload-sarif@e4fba868fa4b1b91e1fdab776edc8cfbe6e9fb81 # v4.37.3
-  #       with:
-  #         sarif_file: snyk.sarif
-  #         category: snyk-container
+      - name: Check for SARIF file
+        id: sarif
+        if: always() && steps.scan.outcome != 'skipped'
+        run: echo "exists=$([ -f snyk.sarif ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
 
-  #     - name: Fail on findings
-  #       if: steps.scan.outcome == 'failure'
-  #       run: exit 1
+      - name: Upload SARIF
+        if: always() && steps.sarif.outputs.exists == 'true'
+        uses: github/codeql-action/upload-sarif@e4fba868fa4b1b91e1fdab776edc8cfbe6e9fb81 # v4.37.3
+        with:
+          sarif_file: snyk.sarif
+          category: snyk-container
+
+      - name: Fail on findings
+        if: steps.scan.outcome == 'failure'
+        run: exit 1
 
   snyk-code:
     name: Snyk Code
