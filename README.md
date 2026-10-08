@@ -120,11 +120,15 @@ app/
 └── services/
 │    └── athena.py            — AthenaService, query builder, aioboto3 calls
 │                             handlers, defines /health
-├── tests                   - Full test suite
+├── tests                   - Full test suite (mirrors /app structure)
 │   ├── README.md
 │   ├── __init__.py
 │   ├── conftest.py
-│   └── v1
+│   └── v1/ 
+└── docs/
+    └── adr/                       # architecture decision records
 ```
 
+## Documentation
 
+Architecture decisions are recorded in docs/adr/
