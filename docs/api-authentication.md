@@ -1,4 +1,4 @@
-# 0001: API authentication
+# API authentication approach
 
 **Date:** 2026-10-08
 **Related:** #1059 (SPIKE: securing API - authentication), #1156 (Create ADR for COAT API authentication)
@@ -14,7 +14,7 @@ Spike #1059 looked at two layers of protection:
 
 I compared existing MOJ services and chose `laa-inquests-api` as the reference model. It's a FastAPI API on Cloud Platform with both layers running in production, which is the closest match to what we're building.
 
-## Decision
+## Proposed approach
 
 ### Production
 
@@ -33,7 +33,7 @@ Follow the reference model.
 - `/health` and `/status` are left unauthenticated so Kubernetes probes can reach them.
 - Any secrets are injected with Kubernetes `secretKeyRef`.
 
-![Authentication diagram](image.png)
+![Authentication diagram](auth-flow-diagram.png)
 
 ### MVP / POC
 
