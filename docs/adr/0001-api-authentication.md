@@ -15,7 +15,6 @@ Spike #1059 looked at two layers of protection:
 I compared existing MOJ services and chose `laa-inquests-api` as the reference model. It's a FastAPI API on Cloud Platform with both layers running in production, which is the closest match to what we're building.
 
 ## Decision
-n/a
 
 ### Production
 
