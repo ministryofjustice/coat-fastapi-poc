@@ -125,10 +125,9 @@ app/
 │   ├── __init__.py
 │   ├── conftest.py
 │   └── v1/ 
-└── docs/
-    └── adr/                       # architecture decision records
+└── docs/                      # Design approach documentation 
 ```
 
 ## Documentation
 
-Architecture decisions are recorded in docs/adr/
+- [API Authentication approach](docs/api-authentication.md)
