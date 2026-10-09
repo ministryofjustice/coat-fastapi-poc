@@ -1,5 +1,7 @@
 # API authentication approach
 
+This documents the current direction for authenticating the COAT API.
+
 **Date:** 2026-10-08
 **Related:** #1059 (SPIKE: securing API - authentication), #1156 (Create ADR for COAT API authentication)
 
@@ -23,6 +25,7 @@ Follow the reference model.
 **Network layer**
 
 - IP allowlist on the Cloud Platform ingress (`nginx.ingress.kubernetes.io/whitelist-source-range`), with ranges supplied at deploy time rather than hard coded.
+- MOJ VPN: callers must connect through the MOJ VPN, so their traffic comes from MoJ ranges and passes the allowlist. Anyone not on the VPN or an MOJ network is blocked at the ingress.
 - ModSecurity with the OWASP core rules, starting in detection-only mode so we can check for false positives before blocking.
 
 **Token layer**
@@ -37,9 +40,8 @@ Follow the reference model.
 
 ### MVP / POC
 
-Keep it simple: a single static credential checked by a FastAPI dependency. The AP team may be able to provide a token for this, as they've during the AI gateway. Its type and how it's validated are still being confirmed. If that doesn't work out, we'll use our own API key.
-
-Either way, the dependency sits in the same place as the future JWT dependency, so moving to production auth means swapping the dependency, not changing the routes.
+Keep it simple: a single static API token, created and managed by us, checked by a FastAPI dependency. 
+The dependency sits in the same place as the future JWT dependency, so moving to production auth means swapping the dependency, not changing the routes.
 
 ## Consequences
 
@@ -59,8 +61,7 @@ Either way, the dependency sits in the same place as the future JWT dependency, 
 
 ## Open questions
 
-- Which identity provider/ bearer Auth0 is most likely, as other COAT services use it
-- What type of token can the AP team provide for the MVP, and how is it validated?
+- Identity provider: likely Auth0 with GitHub as the login connection, as GitHub is the current MOJ standard and other COAT services already use it. This would also allow access to be restricted by GitHub team membership later.
 - Where should the allowlist IP ranges come from?
 - Who are the first consumers? This decides how callers get tokens
 
